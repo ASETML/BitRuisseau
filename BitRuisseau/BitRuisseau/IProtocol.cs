@@ -15,7 +15,7 @@ namespace BitRuisseau
         public string[] GetOnlineMediatheque();
 
         /// <summary>
-        /// Send an "I'm online" message: {"name": "ip", "online": true}
+        /// Send an "I'm online" message: {"dest": "all", "em": "ip", "action": "online"}
         /// </summary>
         public void SayOnline();
 
