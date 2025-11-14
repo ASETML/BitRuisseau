@@ -12,7 +12,7 @@ namespace BitRuisseau
         /// The song title
         /// </summary>
         public string Title { get; set; }
-
+        
         /// <summary>
         /// The song artist
         /// </summary>
@@ -37,5 +37,10 @@ namespace BitRuisseau
         /// The song featuring artists
         /// </summary>
         public string[] Featuring { get; set; }
+
+        /// <summary>
+        /// The hash of the file content
+        /// </summary>
+        public string Hash { get; }
     }
 }

@@ -1,93 +1,48 @@
 # Protocole BitRuisseau
 ## Structure
-Voici à quoi ressemble les messages envoyés sur le broker MQTT. Chaque requête est composé de 3 top-levels obligatoires: 
-- ``version``: la version du protocole
-    - ``a`` ou ``b``: a -> cmid3a, b -> cmid3b
-- ``hosts``: les machines impliquée
-    - ``dest``: le destinataire du message (0.0.0.0 si tout le monde)
-    - ``em``: l'émetteur du message
-- ``action``: pourquoi ce message ?
+Voici à quoi ressemble les messages envoyés sur le broker MQTT (topic: BitRuisseau).
+- ``Recipient``: le destinataire du message (0.0.0.0 si tout le monde, hostname sinon)
+- ``Sender``: l'émetteur du message (hostname)
+- ``Action``: pourquoi ce message ?
+    - ``askOnline``: demande quelles médiathèques sont en ligne
     - ``online``: message "je suis en ligne"
     - ``askCatalog``: demande le catalogue d'une médiathèque
     - ``sendCatalog``: envoie le catalogue de chanson à une autre médiathèque
     - ``askMedia``: demande une chanson à une médiathèque
     - ``sendMedia``: envoie une chanson à une médiathèque
-
-et 1 top-level optionnel:
-- ``params``: paramètre de l'action
-    - ``songs``: Une liste de métadonnées de fichiers audios (sans le fichier audio, voir ISong)
-    - ``sb``: Le bit de début
-    - ``eb``: Le bit de fin
-    - ``data``: Un tableau de bits entre sb et eb dans le fichier audio
+- ``SongList``: Une liste de métadonnées de fichiers audios (sans le fichier audio, voir ISong)
+- ``StartByte``: Le bit de début
+- ``EndByte``: Le bit de fin
+- ``SongData``: Un tableau de bits encodé en base64 entre sb et eb dans le fichier audio
+- ``Hash``: Le hash (SHA256) du fichier demandé / envoyé
 
 ## Exemple de messages
+### Ask online
+```json
+{"Recipient":"0.0.0.0","Sender":"ME","Action":"askOnline","StartByte":null,"EndByte":null,"SongList":null,"SongData":null,"Hash":null}
+```
+
 ### Say online
 ```json
-{
-    "version": "b",
-    "hosts": {
-        "dest": "ip",
-        "em": "ip"
-    },
-    "action": "online"
-}
+{"Recipient":"0.0.0.0","Sender":"ME","Action":"online","StartByte":null,"EndByte":null,"SongList":null,"SongData":null,"Hash":null}
 ```
 
 ### AskCatalog
 ```json
-{
-    "version": "b",
-    "hosts": {
-        "dest": "ip",
-        "em": "ip"
-    },
-    "action": "askCatalog"
-}
+{"Recipient":"0.0.0.0","Sender":"ME","Action":"askCatalog","StartByte":null,"EndByte":null,"SongList":null,"SongData":null,"Hash":null}
 ```
 
 ### SendCatalog
 ```json
-{
-    "version": "b",
-    "hosts": {
-        "dest": "ip",
-        "em": "ip"
-    },
-    "action": "sendCatalog",
-    "params": {
-        "songs": []
-    }
-}
+{"Recipient":"0.0.0.0","Sender":"ME","Action":"askMedia","StartByte":null,"EndByte":null,"SongList":"list de ISong","SongData":null,"Hash":null}
 ```
 
 ### AskMedia
 ```json
-{
-    "version": "b",
-    "hosts": {
-        "dest": "ip",
-        "em": "ip"
-    },
-    "action": "askMedia",
-    "params": {
-        "sb": 1,
-        "eb": 2
-    }
-}
+{"Recipient":"0.0.0.0","Sender":"ME","Action":"askMedia","StartByte":0,"EndByte":10,"SongList":null,"SongData":null,"Hash":"SHA256"}
 ```
 
 ### SendMedia
 ```json
-{
-    "version": "b",
-    "hosts": {
-        "dest": "ip",
-        "em": "ip"
-    },
-    "action": "sendMedia",
-    "params": {
-        "sb": 1,
-        "eb": 2,
-        "data": []
-    }
-}
+{"Recipient":"0.0.0.0","Sender":"ME","Action":"askMedia","StartByte":0,"EndByte":10,"SongList":null,"SongData":"base64 encoded string","Hash":"SHA256"}
+```
