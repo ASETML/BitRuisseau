@@ -1,3 +1,6 @@
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Diagnostics;
 namespace BitRuisseau
 {
     internal static class Program

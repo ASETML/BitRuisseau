@@ -14,6 +14,7 @@ namespace BitRuisseau
             Song s = new Song("song.mp3");
             Trace.WriteLine(s.Hash);
             Trace.WriteLine(JsonSerializer.Serialize(s));
+            new MqttService();
         }
     }
 }
