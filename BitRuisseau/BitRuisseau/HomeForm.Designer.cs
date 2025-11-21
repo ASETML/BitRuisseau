@@ -40,7 +40,7 @@
             btn_selectFolder.TabIndex = 0;
             btn_selectFolder.Text = "Choisir un dossier";
             btn_selectFolder.UseVisualStyleBackColor = true;
-            btn_selectFolder.Click += buttonImportFile_Click;
+            btn_selectFolder.Click += btn_selectFolder_Click;
             // 
             // lbl_selectedFolder
             // 

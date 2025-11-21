@@ -46,6 +46,11 @@ namespace BitRuisseau
         public string Hash { get; }
 
         /// <summary>
+        /// The file format of the song
+        /// </summary>
+        public string Extension { get; }
+
+        /// <summary>
         /// The song path on disk
         /// </summary>
         [JsonIgnore]
@@ -61,6 +66,7 @@ namespace BitRuisseau
             Size = Int32.Parse(new FileInfo(path).Length.ToString());
             Featuring = tagFile.Tag.Artists;
             Hash = Helper.HashFile(path);
+            Extension = new FileInfo(path).Extension;
         }
     }
 }
