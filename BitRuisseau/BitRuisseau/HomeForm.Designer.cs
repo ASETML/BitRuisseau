@@ -30,6 +30,7 @@
         {
             btn_selectFolder = new Button();
             lbl_selectedFolder = new Label();
+            flp_localList = new FlowLayoutPanel();
             SuspendLayout();
             // 
             // btn_selectFolder
@@ -51,11 +52,22 @@
             lbl_selectedFolder.TabIndex = 1;
             lbl_selectedFolder.Text = " ";
             // 
+            // flp_localList
+            // 
+            flp_localList.AutoScroll = true;
+            flp_localList.FlowDirection = FlowDirection.TopDown;
+            flp_localList.Location = new Point(12, 41);
+            flp_localList.Name = "flp_localList";
+            flp_localList.Size = new Size(280, 397);
+            flp_localList.TabIndex = 2;
+            flp_localList.WrapContents = false;
+            // 
             // HomeForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(flp_localList);
             Controls.Add(lbl_selectedFolder);
             Controls.Add(btn_selectFolder);
             Name = "HomeForm";
@@ -68,5 +80,6 @@
 
         private Button btn_selectFolder;
         private Label lbl_selectedFolder;
+        private FlowLayoutPanel flp_localList;
     }
 }

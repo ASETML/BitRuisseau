@@ -22,16 +22,9 @@ namespace BitRuisseau
                 _songFolder = File.ReadAllText("path.txt");
                 this.lbl_selectedFolder.Text = _songFolder;
                 songs = LoadSongs(GetDirectoryAudioFiles(_songFolder));
-
-                //TEMP
-                songs.ForEach(s => Trace.WriteLine(JsonSerializer.Serialize(s)));
+                songs.ForEach(s => flp_localList.Controls.Add(new SongCard(s)));
             }
 
-            File.WriteAllText("txt.txt", JsonSerializer.Serialize(new Message { Action = "online", Recipient = "0.0.0.0", Sender = "ME" }));
-
-            Song s = new Song("song.mp3");
-            Trace.WriteLine(s.Hash);
-            Trace.WriteLine(JsonSerializer.Serialize(s));
             new MqttService();
         }
 
@@ -42,7 +35,9 @@ namespace BitRuisseau
         /// <returns>A list of all audio file path</returns>
         public List<string> GetDirectoryAudioFiles(string dir)
         {
-            return Directory.GetFileSystemEntries(dir).ToList().Where(e => IsAudioFile(e)).ToList();
+            EnumerationOptions options = new EnumerationOptions();
+            options.RecurseSubdirectories = true;
+            return Directory.GetFileSystemEntries(dir, "*", options).ToList().Where(e => IsAudioFile(e)).ToList();
         }
 
         /// <summary>
@@ -54,7 +49,10 @@ namespace BitRuisseau
         {
             foreach (string extension in supportedFileTypes)
             {
-                return path.EndsWith(extension) && File.Exists(path) ? true : false;
+                if (path.EndsWith(extension) && File.Exists(path))
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -87,6 +85,9 @@ namespace BitRuisseau
                 this.lbl_selectedFolder.Text = _songFolder;
                 File.WriteAllText("path.txt", _songFolder);
                 songs = LoadSongs(GetDirectoryAudioFiles(_songFolder));
+
+                flp_localList.Controls.Clear();
+                songs.ForEach(s => flp_localList.Controls.Add(new SongCard(s)));
             }
         }
     }

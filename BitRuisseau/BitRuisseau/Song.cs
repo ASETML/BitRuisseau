@@ -64,9 +64,11 @@ namespace BitRuisseau
             Year = Int32.Parse(tagFile.Tag.Year.ToString());
             Duration = tagFile.Properties.Duration;
             Size = Int32.Parse(new FileInfo(path).Length.ToString());
-            Featuring = tagFile.Tag.Artists;
+            Featuring = tagFile.Tag.Performers;
             Hash = Helper.HashFile(path);
             Extension = new FileInfo(path).Extension;
+
+            Path = path;
         }
     }
 }

@@ -4,5 +4,8 @@
     <Compile Update="HomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="SongCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
