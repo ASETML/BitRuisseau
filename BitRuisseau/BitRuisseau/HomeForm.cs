@@ -7,8 +7,8 @@ namespace BitRuisseau
 {
     public partial class HomeForm : Form
     {
-        public List<Song> songs { get; set; }
         private string _songFolder;
+        private MqttService mqttService;
 
         public HomeForm()
         {
@@ -19,11 +19,12 @@ namespace BitRuisseau
             {
                 _songFolder = File.ReadAllText(Config.LASTUSEDPATHFILE);
                 this.lbl_selectedFolder.Text = _songFolder;
-                songs = LoadSongs(GetDirectoryAudioFiles(_songFolder));
-                songs.ForEach(s => flp_localList.Controls.Add(new SongCard(s)));
+                Program.songs = LoadSongs(GetDirectoryAudioFiles(_songFolder));
+                Program.songs.ForEach(s => flp_localList.Controls.Add(new SongCard(s)));
             }
 
-            new MqttService();
+            Protocol.SayOnline();
+            Protocol.GetOnlineMediatheque();
         }
 
         /// <summary>
@@ -62,6 +63,7 @@ namespace BitRuisseau
         /// <returns>A list of songs</returns>
         public List<Song> LoadSongs(List<string> audioFiles)
         {
+            audioFiles.ForEach(f => Trace.WriteLine(f));
             return audioFiles.Select(f => new Song(f)).ToList();
         }
 
@@ -82,11 +84,22 @@ namespace BitRuisseau
                 _songFolder = openFolderDialog.SelectedPath;
                 this.lbl_selectedFolder.Text = _songFolder;
                 File.WriteAllText(Config.LASTUSEDPATHFILE, _songFolder);
-                songs = LoadSongs(GetDirectoryAudioFiles(_songFolder));
+                Program.songs.Clear();
+                Program.songs = LoadSongs(GetDirectoryAudioFiles(_songFolder));
 
                 flp_localList.Controls.Clear();
-                songs.ForEach(s => flp_localList.Controls.Add(new SongCard(s)));
+                Program.songs.ForEach(s => flp_localList.Controls.Add(new SongCard(s)));
             }
+
+            try
+            {
+                Protocol.SendCatalog("0.0.0.0");
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex);
+            }
+            
         }
     }
 }

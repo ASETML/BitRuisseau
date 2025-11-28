@@ -38,7 +38,7 @@ namespace BitRuisseau
         /// <summary>
         /// The list of song metadata
         /// </summary>
-        public List<ISong> ?SongList { get; set; }
+        public List<Song> ?SongList { get; set; }
 
         /// <summary>
         /// The base64 encoded byte array of the audio file

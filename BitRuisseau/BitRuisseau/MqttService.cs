@@ -28,17 +28,29 @@ namespace BitRuisseau
             options.Host = env.GetValue("host", typeof(string)).ToString();
             client = new HiveMQClient(options);
             Connect();
-            SendMessage(new Message { Action = "online", Recipient = "0.0.0.0", Sender = "ME" });
         }
 
         public async void Connect()
         {
             await client.ConnectAsync().ConfigureAwait(false);
+            client.OnMessageReceived += (sender, args) =>
+            {
+                try {
+                    HandleMessage.Handle(JsonSerializer.Deserialize<Message>(args.PublishMessage.PayloadAsString));
+                    Trace.WriteLine("Message Received: {} " + args.PublishMessage.PayloadAsString);
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e);
+                }
+                
+            };
+            client.SubscribeAsync(Config.TOPIC).ConfigureAwait(false);
         }
 
         public async void SendMessage(Message msg)
         {
-            await client.PublishAsync("BitRuisseau", JsonSerializer.Serialize(msg)).ConfigureAwait(false);
+            await client.PublishAsync(Config.TOPIC, JsonSerializer.Serialize(msg)).ConfigureAwait(false);
         }
     }
 }
