@@ -71,7 +71,7 @@
             Controls.Add(lbl_selectedFolder);
             Controls.Add(btn_selectFolder);
             Name = "HomeForm";
-            Text = "Form1";
+            Text = "BitRuisseau";
             ResumeLayout(false);
             PerformLayout();
         }

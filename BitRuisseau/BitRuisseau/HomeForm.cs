@@ -9,17 +9,15 @@ namespace BitRuisseau
     {
         public List<Song> songs { get; set; }
         private string _songFolder;
-        //TODO: move to a config class
-        private string[] supportedFileTypes = ["mp3", "wav", "ogg"]; 
 
         public HomeForm()
         {
             InitializeComponent();
 
             //Load the last used song path
-            if (Path.Exists("path.txt"))
+            if (Path.Exists(Config.LASTUSEDPATHFILE))
             {
-                _songFolder = File.ReadAllText("path.txt");
+                _songFolder = File.ReadAllText(Config.LASTUSEDPATHFILE);
                 this.lbl_selectedFolder.Text = _songFolder;
                 songs = LoadSongs(GetDirectoryAudioFiles(_songFolder));
                 songs.ForEach(s => flp_localList.Controls.Add(new SongCard(s)));
@@ -47,7 +45,7 @@ namespace BitRuisseau
         /// <returns>true if it is an audio file, else false</returns>
         public bool IsAudioFile(string path)
         {
-            foreach (string extension in supportedFileTypes)
+            foreach (string extension in Config.SUPPORTEDFILETYPES)
             {
                 if (path.EndsWith(extension) && File.Exists(path))
                 {
@@ -83,7 +81,7 @@ namespace BitRuisseau
                 //Get the path of specified file
                 _songFolder = openFolderDialog.SelectedPath;
                 this.lbl_selectedFolder.Text = _songFolder;
-                File.WriteAllText("path.txt", _songFolder);
+                File.WriteAllText(Config.LASTUSEDPATHFILE, _songFolder);
                 songs = LoadSongs(GetDirectoryAudioFiles(_songFolder));
 
                 flp_localList.Controls.Clear();
