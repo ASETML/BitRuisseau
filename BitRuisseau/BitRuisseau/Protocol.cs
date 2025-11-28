@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -56,10 +58,17 @@ namespace BitRuisseau
         /// <summary>
         /// Send the media to someone
         /// </summary>
-        /// <param name="song">The song to send</param>
+        /// <param name="hash">The hash of the song to send</param>
         /// <param name="startByte">The first byte they need</param>
         /// <param name="endByte">The last byte they need</param>
         /// <param name="name">The name/ip of the mediatheque</param>
-        public static void SendMedia(ISong song, string name, int startByte, int endByte) { }
+        public static void SendMedia(string hash, string name, int startByte, int endByte)
+        {
+            byte[] bytes = File.ReadAllBytes(/*Program.songs.Where(s => s.Hash == hash).First().Path*/@"C:\Users\po37sqb\Music\Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster).mp3");
+            string b64 = Convert.ToBase64String(bytes.Skip(startByte).SkipLast(endByte).ToArray());//Skip doesnt work + wrong logic
+            Trace.WriteLine(b64);
+            bytes = Array.Empty<byte>(); //Free memory
+            mqttService.SendMessage(new Message { Action = "sendMedia", Sender = System.Net.Dns.GetHostName(), Recipient = name, EndByte = endByte, StartByte = startByte, Hash = hash, SongData = b64 });
+        }
     }
 }

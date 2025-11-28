@@ -44,10 +44,10 @@ namespace BitRuisseau
         /// <summary>
         /// Send the media to someone
         /// </summary>
-        /// <param name="song">The song to send</param>
+        /// <param name="hash">The hash of the song to send</param>
         /// <param name="startByte">The first byte they need</param>
         /// <param name="endByte">The last byte they need</param>
         /// <param name="name">The name/ip of the mediatheque</param>
-        public void SendMedia(ISong song, string name, int startByte, int endByte);
+        public void SendMedia(string hash, string name, int startByte, int endByte);
     }
 }

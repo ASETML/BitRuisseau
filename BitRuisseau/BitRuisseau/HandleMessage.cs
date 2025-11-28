@@ -26,6 +26,10 @@ namespace BitRuisseau
                     case "askCatalog":
                         Protocol.SendCatalog(message.Sender);
                         break;
+
+                    case "askMedia":
+                        Protocol.SendMedia(message.Hash, message.Sender, int.Parse(message.StartByte.ToString()), int.Parse(message.EndByte.ToString()));
+                        break;
                 }
             }
         }

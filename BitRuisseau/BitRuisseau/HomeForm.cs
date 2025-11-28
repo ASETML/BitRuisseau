@@ -90,16 +90,6 @@ namespace BitRuisseau
                 flp_localList.Controls.Clear();
                 Program.songs.ForEach(s => flp_localList.Controls.Add(new SongCard(s)));
             }
-
-            try
-            {
-                Protocol.SendCatalog("0.0.0.0");
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex);
-            }
-            
         }
     }
 }
