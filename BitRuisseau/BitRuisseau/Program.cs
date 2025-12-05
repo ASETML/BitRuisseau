@@ -5,7 +5,12 @@ namespace BitRuisseau
 {
     internal static class Program
     {
-        public static List<Song> songs { get; set; }
+        //The list of local songs
+        public static List<Song> songs { get; set; } = new List<Song>();
+
+        //The list of mediatheques and their songs
+        public static Dictionary<string, List<ISong>> mediathequeSongs { get; set; } = new Dictionary<string, List<ISong>>();
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>

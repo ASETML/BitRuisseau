@@ -13,22 +13,22 @@ namespace BitRuisseau
     {
         //The service used to send messages
         private static MqttService mqttService = new MqttService();
+
         /// <summary>
         /// Get the list of all online mediatheque
         /// </summary>
         /// <returns>An array of mediatheque name/ip</returns>
-        public static string[] GetOnlineMediatheque()
+        public async static Task GetOnlineMediatheque()
         {
-            mqttService.SendMessage(new Message() { Action = "askOnline", Recipient = "0.0.0.0", Sender = System.Net.Dns.GetHostName() });
-            return null;
+            await mqttService.SendMessage(new Message() { Action = "askOnline", Recipient = "0.0.0.0", Sender = System.Net.Dns.GetHostName() });
         }
 
         /// <summary>
         /// Send an "I'm online" message
         /// </summary>
-        public static void SayOnline()
+        public async static void SayOnline()
         {
-            mqttService.SendMessage(new Message() { Action = "online", Recipient = "0.0.0.0", Sender = System.Net.Dns.GetHostName() });
+            await mqttService.SendMessage(new Message() { Action = "online", Recipient = "0.0.0.0", Sender = System.Net.Dns.GetHostName() });
         }
 
         /// <summary>
@@ -36,15 +36,18 @@ namespace BitRuisseau
         /// </summary>
         /// <param name="name">The name/ip of the mediatheque</param>
         /// <returns>A list of songs</returns>
-        public static List<ISong> AskCatalog(string name) { return null; }
+        public async static void AskCatalog(string name)
+        {
+            await mqttService.SendMessage(new Message() { Action = "sendCatalog", Recipient = name, Sender = System.Net.Dns.GetHostName(), SongList = Program.songs });
+        }
 
         /// <summary>
         /// Send our catalog to a specific mediatheque
         /// </summary>
         /// <param name="name">The name/ip of the mediatheque</param>
-        public static void SendCatalog(string name)
+        public async static void SendCatalog(string name)
         {
-            mqttService.SendMessage(new Message() { Action = "sendCatalog", Recipient = name, Sender = System.Net.Dns.GetHostName(), SongList = Program.songs });
+            await mqttService.SendMessage(new Message() { Action = "sendCatalog", Recipient = name, Sender = System.Net.Dns.GetHostName(), SongList = Program.songs });
         }
 
         /// <summary>
@@ -63,7 +66,7 @@ namespace BitRuisseau
         /// <param name="startByte">The first byte they need</param>
         /// <param name="endByte">The last byte they need</param>
         /// <param name="name">The name/ip of the mediatheque</param>
-        public static void SendMedia(string hash, string name, int startByte, int endByte)
+        public async static void SendMedia(string hash, string name, int startByte, int endByte)
         {
             byte[] bytes = File.ReadAllBytes(Program.songs.Where(s => s.Hash == hash).First().Path);
             string b64 = Convert.ToBase64String(bytes.Skip(startByte).Take(endByte - startByte).ToArray());
@@ -71,7 +74,7 @@ namespace BitRuisseau
 
             bytes = null; //Free memory doesnt seem to work https://stackoverflow.com/questions/20859373/clear-array-after-is-used-c-sharp
 
-            mqttService.SendMessage(new Message { Action = "sendMedia", Sender = System.Net.Dns.GetHostName(), Recipient = name, EndByte = endByte, StartByte = startByte, Hash = hash, SongData = b64 });
+            await mqttService.SendMessage(new Message { Action = "sendMedia", Sender = System.Net.Dns.GetHostName(), Recipient = name, EndByte = endByte, StartByte = startByte, Hash = hash, SongData = b64 });
         }
     }
 }

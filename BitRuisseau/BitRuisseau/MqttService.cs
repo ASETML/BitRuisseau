@@ -48,7 +48,7 @@ namespace BitRuisseau
             client.SubscribeAsync(Config.TOPIC).ConfigureAwait(false);
         }
 
-        public async void SendMessage(Message msg)
+        public async Task SendMessage(Message msg)
         {
             await client.PublishAsync(Config.TOPIC, JsonSerializer.Serialize(msg)).ConfigureAwait(false);
         }

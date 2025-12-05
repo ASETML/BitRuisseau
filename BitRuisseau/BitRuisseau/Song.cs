@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Formats.Tar;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -58,17 +59,32 @@ namespace BitRuisseau
 
         public Song(string path)
         {
-            TagLib.File tagFile = TagLib.File.Create(path);
-            Title = tagFile.Tag.Title;
-            Artist = tagFile.Tag.FirstAlbumArtist;
-            Year = Int32.Parse(tagFile.Tag.Year.ToString());
-            Duration = tagFile.Properties.Duration;
-            Size = Int32.Parse(new FileInfo(path).Length.ToString());
-            Featuring = tagFile.Tag.Performers;
-            Hash = Helper.HashFile(path);
-            Extension = new FileInfo(path).Extension;
+            try
+            {
+                TagLib.File tagFile = TagLib.File.Create(path);
+                Title = tagFile.Tag.Title;
+                Artist = tagFile.Tag.FirstAlbumArtist;
+                Year = Int32.Parse(tagFile.Tag.Year.ToString());
+                Duration = tagFile.Properties.Duration;
+                Size = Int32.Parse(new FileInfo(path).Length.ToString());
+                Featuring = tagFile.Tag.Performers;
+                Hash = Helper.HashFile(path);
+                Extension = new FileInfo(path).Extension;
 
-            Path = path;
+                Path = path;
+            }
+            catch {
+                Title = "Fichier corrompu";
+                Artist = string.Empty;
+                Year = 0;
+                Duration = TimeSpan.Zero;
+                Size = Int32.Parse(new FileInfo(path).Length.ToString());
+                Featuring = [string.Empty];
+                Hash = Helper.HashFile(path);
+                Extension = new FileInfo(path).Extension;
+
+                Path = path;
+            }
         }
     }
 }

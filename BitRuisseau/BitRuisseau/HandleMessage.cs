@@ -16,7 +16,11 @@ namespace BitRuisseau
                 switch (message.Action)
                 {
                     case "online":
-                        Trace.WriteLine(message.Sender + " isonline");
+                        if (!Program.mediathequeSongs.ContainsKey(message.Sender))
+                        {
+                            Program.mediathequeSongs.Add(message.Sender, new List<ISong>());
+                            Program.mediathequeSongs.Keys.ToList().ForEach(k => Trace.WriteLine("Online: " + k));
+                        }
                         break;
 
                     case "askOnline":

@@ -31,6 +31,8 @@
             btn_selectFolder = new Button();
             lbl_selectedFolder = new Label();
             flp_localList = new FlowLayoutPanel();
+            flp_mediathequesList = new FlowLayoutPanel();
+            btn_loadMediatheques = new Button();
             SuspendLayout();
             // 
             // btn_selectFolder
@@ -62,11 +64,33 @@
             flp_localList.TabIndex = 2;
             flp_localList.WrapContents = false;
             // 
+            // flp_mediathequesList
+            // 
+            flp_mediathequesList.AutoScroll = true;
+            flp_mediathequesList.FlowDirection = FlowDirection.TopDown;
+            flp_mediathequesList.Location = new Point(298, 41);
+            flp_mediathequesList.Name = "flp_mediathequesList";
+            flp_mediathequesList.Size = new Size(280, 397);
+            flp_mediathequesList.TabIndex = 3;
+            flp_mediathequesList.WrapContents = false;
+            // 
+            // btn_loadMediatheques
+            // 
+            btn_loadMediatheques.Location = new Point(298, 12);
+            btn_loadMediatheques.Name = "btn_loadMediatheques";
+            btn_loadMediatheques.Size = new Size(197, 23);
+            btn_loadMediatheques.TabIndex = 4;
+            btn_loadMediatheques.Text = "Charger les médiathèques en ligne";
+            btn_loadMediatheques.UseVisualStyleBackColor = true;
+            btn_loadMediatheques.Click += btn_loadMediatheques_Click;
+            // 
             // HomeForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btn_loadMediatheques);
+            Controls.Add(flp_mediathequesList);
             Controls.Add(flp_localList);
             Controls.Add(lbl_selectedFolder);
             Controls.Add(btn_selectFolder);
@@ -81,5 +105,7 @@
         private Button btn_selectFolder;
         private Label lbl_selectedFolder;
         private FlowLayoutPanel flp_localList;
+        private FlowLayoutPanel flp_mediathequesList;
+        private Button btn_loadMediatheques;
     }
 }

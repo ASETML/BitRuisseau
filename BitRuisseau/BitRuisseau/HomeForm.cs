@@ -8,7 +8,6 @@ namespace BitRuisseau
     public partial class HomeForm : Form
     {
         private string _songFolder;
-        private MqttService mqttService;
 
         public HomeForm()
         {
@@ -24,7 +23,6 @@ namespace BitRuisseau
             }
 
             Protocol.SayOnline();
-            Protocol.GetOnlineMediatheque();
         }
 
         /// <summary>
@@ -88,6 +86,21 @@ namespace BitRuisseau
 
                 flp_localList.Controls.Clear();
                 Program.songs.ForEach(s => flp_localList.Controls.Add(new SongCard(s)));
+            }
+        }
+
+        private async void btn_loadMediatheques_Click(object sender, EventArgs e)
+        {
+            Program.mediathequeSongs.Clear();
+
+            await Protocol.GetOnlineMediatheque();
+
+            Thread.Sleep(200);
+
+            flp_mediathequesList.Controls.Clear();
+            foreach (KeyValuePair<string, List<ISong>> mediatheque in Program.mediathequeSongs)
+            {
+                flp_mediathequesList.Controls.Add(new MediathequeCard(mediatheque.Key));
             }
         }
     }
