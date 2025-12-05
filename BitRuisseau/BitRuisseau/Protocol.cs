@@ -11,6 +11,7 @@ namespace BitRuisseau
 {
     public static class Protocol
     {
+        //The service used to send messages
         private static MqttService mqttService = new MqttService();
         /// <summary>
         /// Get the list of all online mediatheque
@@ -64,10 +65,12 @@ namespace BitRuisseau
         /// <param name="name">The name/ip of the mediatheque</param>
         public static void SendMedia(string hash, string name, int startByte, int endByte)
         {
-            byte[] bytes = File.ReadAllBytes(/*Program.songs.Where(s => s.Hash == hash).First().Path*/@"C:\Users\po37sqb\Music\Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster).mp3");
-            string b64 = Convert.ToBase64String(bytes.Skip(startByte).SkipLast(endByte).ToArray());//Skip doesnt work + wrong logic
+            byte[] bytes = File.ReadAllBytes(Program.songs.Where(s => s.Hash == hash).First().Path);
+            string b64 = Convert.ToBase64String(bytes.Skip(startByte).Take(endByte - startByte).ToArray());
             Trace.WriteLine(b64);
-            bytes = Array.Empty<byte>(); //Free memory
+
+            bytes = null; //Free memory doesnt seem to work https://stackoverflow.com/questions/20859373/clear-array-after-is-used-c-sharp
+
             mqttService.SendMessage(new Message { Action = "sendMedia", Sender = System.Net.Dns.GetHostName(), Recipient = name, EndByte = endByte, StartByte = startByte, Hash = hash, SongData = b64 });
         }
     }

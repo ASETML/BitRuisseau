@@ -54,7 +54,7 @@ namespace BitRuisseau
         /// The song path on disk
         /// </summary>
         [JsonIgnore]
-        public string Path { get; set; }
+        public string? Path { get; set; }
 
         public Song(string path)
         {

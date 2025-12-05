@@ -63,7 +63,6 @@ namespace BitRuisseau
         /// <returns>A list of songs</returns>
         public List<Song> LoadSongs(List<string> audioFiles)
         {
-            audioFiles.ForEach(f => Trace.WriteLine(f));
             return audioFiles.Select(f => new Song(f)).ToList();
         }
 
