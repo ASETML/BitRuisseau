@@ -48,6 +48,7 @@
             Controls.Add(lbl_name);
             Name = "MediathequeCard";
             Size = new Size(251, 53);
+            Click += MediathequeCard_Click;
             ResumeLayout(false);
             PerformLayout();
         }
