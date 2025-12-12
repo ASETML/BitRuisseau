@@ -13,6 +13,8 @@ namespace BitRuisseau
     public partial class MediathequeCard : UserControl
     {
         private string _name;
+        public event EventHandler MediathequeSelected;
+
         public MediathequeCard(string name)
         {
             InitializeComponent();
@@ -27,7 +29,8 @@ namespace BitRuisseau
 
         private void MediathequeCard_Click(object sender, EventArgs e)
         {
-            Protocol.AskCatalog(this._name);
+            
+            MediathequeSelected.Invoke(this, new AskCatalogEventArgs(this._name));
         }
     }
 }

@@ -33,6 +33,7 @@
             flp_localList = new FlowLayoutPanel();
             flp_mediathequesList = new FlowLayoutPanel();
             btn_loadMediatheques = new Button();
+            flowLayoutPanel1 = new FlowLayoutPanel();
             SuspendLayout();
             // 
             // btn_selectFolder
@@ -84,11 +85,22 @@
             btn_loadMediatheques.UseVisualStyleBackColor = true;
             btn_loadMediatheques.Click += btn_loadMediatheques_Click;
             // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.AutoScroll = true;
+            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanel1.Location = new Point(584, 41);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(280, 397);
+            flowLayoutPanel1.TabIndex = 3;
+            flowLayoutPanel1.WrapContents = false;
+            // 
             // HomeForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(868, 450);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(btn_loadMediatheques);
             Controls.Add(flp_mediathequesList);
             Controls.Add(flp_localList);
@@ -107,5 +119,6 @@
         private FlowLayoutPanel flp_localList;
         private FlowLayoutPanel flp_mediathequesList;
         private Button btn_loadMediatheques;
+        private FlowLayoutPanel flowLayoutPanel1;
     }
 }

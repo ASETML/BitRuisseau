@@ -9,7 +9,7 @@ namespace BitRuisseau
         public static List<Song> songs { get; set; } = new List<Song>();
 
         //The list of mediatheques and their songs
-        public static Dictionary<string, List<ISong>> mediathequeSongs { get; set; } = new Dictionary<string, List<ISong>>();
+        public static Dictionary<string, List<Song>> mediathequeSongs { get; set; } = new Dictionary<string, List<Song>>();
 
         /// <summary>
         ///  The main entry point for the application.

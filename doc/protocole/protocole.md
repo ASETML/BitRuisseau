@@ -44,5 +44,5 @@ Voici à quoi ressemble les messages envoyés sur le broker MQTT (topic: BitRuis
 
 ### SendMedia
 ```json
-{"Recipient":"0.0.0.0","Sender":"ME","Action":"askMedia","StartByte":0,"EndByte":10,"SongList":null,"SongData":"base64 encoded string","Hash":"SHA256"}
+{"Recipient":"0.0.0.0","Sender":"ME","Action":"sendMedia","StartByte":0,"EndByte":10,"SongList":null,"SongData":"base64 encoded string","Hash":"SHA256"}
 ```

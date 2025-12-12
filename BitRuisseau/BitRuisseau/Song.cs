@@ -57,6 +57,7 @@ namespace BitRuisseau
         [JsonIgnore]
         public string? Path { get; set; }
 
+        public Song() { }
         public Song(string path)
         {
             try

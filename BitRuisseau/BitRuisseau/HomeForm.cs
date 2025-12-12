@@ -89,18 +89,43 @@ namespace BitRuisseau
             }
         }
 
+        //TODO: event when online message received
         private async void btn_loadMediatheques_Click(object sender, EventArgs e)
         {
             Program.mediathequeSongs.Clear();
 
             await Protocol.GetOnlineMediatheque();
 
-            Thread.Sleep(200);
+            Thread.Sleep(500);
 
             flp_mediathequesList.Controls.Clear();
-            foreach (KeyValuePair<string, List<ISong>> mediatheque in Program.mediathequeSongs)
+            foreach (KeyValuePair<string, List<Song>> mediatheque in Program.mediathequeSongs)
             {
-                flp_mediathequesList.Controls.Add(new MediathequeCard(mediatheque.Key));
+                MediathequeCard mc = new MediathequeCard(mediatheque.Key);
+                mc.MediathequeSelected += MediaAsked;
+                flp_mediathequesList.Controls.Add(mc);
+            }
+        }
+
+        private async void MediaAsked(object sender, EventArgs e)
+        {
+            AskCatalogEventArgs ev = (AskCatalogEventArgs)e;
+            Trace.WriteLine("Catalogue reçu !!" + ev.Name);
+            await Protocol.AskCatalog(ev.Name);
+
+            //Wait for the response
+            Thread.Sleep(200);
+            
+            int count = 0;
+            while (Program.mediathequeSongs[ev.Name].Count() == 0 && count < 100) {
+                Thread.Sleep(50);
+                count++;
+            }
+
+            flowLayoutPanel1.Controls.Clear();
+            foreach (Song s in Program.mediathequeSongs[ev.Name])
+            {
+                flowLayoutPanel1.Controls.Add(new SongCard(s));
             }
         }
     }

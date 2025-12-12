@@ -36,9 +36,10 @@ namespace BitRuisseau
         /// </summary>
         /// <param name="name">The name/ip of the mediatheque</param>
         /// <returns>A list of songs</returns>
-        public async static void AskCatalog(string name)
+        public async static Task AskCatalog(string name)
         {
-            await mqttService.SendMessage(new Message() { Action = "sendCatalog", Recipient = name, Sender = System.Net.Dns.GetHostName(), SongList = Program.songs });
+            Trace.WriteLine(name);
+            await mqttService.SendMessage(new Message() { Action = "askCatalog", Recipient = name, Sender = System.Net.Dns.GetHostName() });
         }
 
         /// <summary>

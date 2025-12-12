@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BitRuisseau
@@ -18,7 +19,7 @@ namespace BitRuisseau
                     case "online":
                         if (!Program.mediathequeSongs.ContainsKey(message.Sender))
                         {
-                            Program.mediathequeSongs.Add(message.Sender, new List<ISong>());
+                            Program.mediathequeSongs.Add(message.Sender, new List<Song>());
                             Program.mediathequeSongs.Keys.ToList().ForEach(k => Trace.WriteLine("Online: " + k));
                         }
                         break;
@@ -31,8 +32,23 @@ namespace BitRuisseau
                         Protocol.SendCatalog(message.Sender);
                         break;
 
+                    case "sendCatalog":
+                        if (!Program.mediathequeSongs.ContainsKey(message.Sender))
+                        {
+                            Program.mediathequeSongs.Add(message.Sender, message.SongList);
+                        }
+                        else
+                        {
+                            Program.mediathequeSongs[message.Sender] = message.SongList;
+                        }
+                        break;
+
                     case "askMedia":
                         Protocol.SendMedia(message.Hash, message.Sender, int.Parse(message.StartByte.ToString()), int.Parse(message.EndByte.ToString()));
+                        break;
+
+                    default:
+                        Trace.WriteLine($"Invalid message received at {DateTime.Now}: {JsonSerializer.Serialize(message)}");
                         break;
                 }
             }
