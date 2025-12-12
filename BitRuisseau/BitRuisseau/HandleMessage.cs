@@ -20,7 +20,6 @@ namespace BitRuisseau
                         if (!Program.mediathequeSongs.ContainsKey(message.Sender))
                         {
                             Program.mediathequeSongs.Add(message.Sender, new List<Song>());
-                            Program.mediathequeSongs.Keys.ToList().ForEach(k => Trace.WriteLine("Online: " + k));
                         }
                         break;
 

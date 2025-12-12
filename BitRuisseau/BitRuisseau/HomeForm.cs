@@ -73,7 +73,7 @@ namespace BitRuisseau
         {
             FolderBrowserDialog openFolderDialog = new FolderBrowserDialog();
 
-            openFolderDialog.InitialDirectory = $"c:\\Users\\{Environment.UserName}\\Music";
+            openFolderDialog.InitialDirectory = Environment.SpecialFolder.MyMusic.ToString();
 
             if (openFolderDialog.ShowDialog() == DialogResult.OK)
             {
@@ -96,7 +96,7 @@ namespace BitRuisseau
 
             await Protocol.GetOnlineMediatheque();
 
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
 
             flp_mediathequesList.Controls.Clear();
             foreach (KeyValuePair<string, List<Song>> mediatheque in Program.mediathequeSongs)
@@ -110,7 +110,6 @@ namespace BitRuisseau
         private async void MediaAsked(object sender, EventArgs e)
         {
             AskCatalogEventArgs ev = (AskCatalogEventArgs)e;
-            Trace.WriteLine("Catalogue reçu !!" + ev.Name);
             await Protocol.AskCatalog(ev.Name);
 
             //Wait for the response

@@ -3,6 +3,7 @@ using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace BitRuisseau
         /// <returns>An array of mediatheque name/ip</returns>
         public async static Task GetOnlineMediatheque()
         {
-            await mqttService.SendMessage(new Message() { Action = "askOnline", Recipient = "0.0.0.0", Sender = System.Net.Dns.GetHostName() });
+            await mqttService.SendMessage(new Message() { Action = "askOnline", Recipient = "0.0.0.0" });
         }
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace BitRuisseau
         /// </summary>
         public async static void SayOnline()
         {
-            await mqttService.SendMessage(new Message() { Action = "online", Recipient = "0.0.0.0", Sender = System.Net.Dns.GetHostName() });
+            await mqttService.SendMessage(new Message() { Action = "online", Recipient = "0.0.0.0" });
         }
 
         /// <summary>
@@ -38,8 +39,7 @@ namespace BitRuisseau
         /// <returns>A list of songs</returns>
         public async static Task AskCatalog(string name)
         {
-            Trace.WriteLine(name);
-            await mqttService.SendMessage(new Message() { Action = "askCatalog", Recipient = name, Sender = System.Net.Dns.GetHostName() });
+            await mqttService.SendMessage(new Message() { Action = "askCatalog", Recipient = name });
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace BitRuisseau
         /// <param name="name">The name/ip of the mediatheque</param>
         public async static void SendCatalog(string name)
         {
-            await mqttService.SendMessage(new Message() { Action = "sendCatalog", Recipient = name, Sender = System.Net.Dns.GetHostName(), SongList = Program.songs });
+            await mqttService.SendMessage(new Message() { Action = "sendCatalog", Recipient = name, SongList = Program.songs });
         }
 
         /// <summary>
@@ -58,7 +58,10 @@ namespace BitRuisseau
         /// <param name="startByte">The first byte you need</param>
         /// <param name="endByte">The last byte you need</param>
         /// <param name="name">The name/ip of the mediatheque</param>
-        public static void AskMedia(ISong song, string name, int startByte, int endByte) { }
+        public async static Task AskMedia(string hash, string name, int startByte, int endByte)
+        {
+            await mqttService.SendMessage(new Message { Action = "askMedia", Recipient = name, EndByte = endByte, StartByte = startByte, Hash = hash});
+        }
 
         /// <summary>
         /// Send the media to someone
@@ -73,11 +76,10 @@ namespace BitRuisseau
             {
                 byte[] bytes = File.ReadAllBytes(Program.songs.Where(s => s.Hash == hash).First().Path);
                 string b64 = Convert.ToBase64String(bytes.Skip(startByte).Take(endByte - startByte).ToArray());
-                Trace.WriteLine(b64);
 
                 bytes = null; //Free memory doesnt seem to work https://stackoverflow.com/questions/20859373/clear-array-after-is-used-c-sharp
 
-                await mqttService.SendMessage(new Message { Action = "sendMedia", Sender = System.Net.Dns.GetHostName(), Recipient = name, EndByte = endByte, StartByte = startByte, Hash = hash, SongData = b64 });
+                await mqttService.SendMessage(new Message { Action = "sendMedia", Recipient = name, EndByte = endByte, StartByte = startByte, Hash = hash, SongData = b64 });
             }
         }
     }

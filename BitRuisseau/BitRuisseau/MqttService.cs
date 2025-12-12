@@ -37,7 +37,6 @@ namespace BitRuisseau
             {
                 try {
                     HandleMessage.Handle(JsonSerializer.Deserialize<Message>(args.PublishMessage.PayloadAsString));
-                    Trace.WriteLine("Message Received: {} " + args.PublishMessage.PayloadAsString);
                 }
                 catch (Exception e)
                 {

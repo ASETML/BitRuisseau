@@ -21,5 +21,11 @@ namespace BitRuisseau
             this.lbl_year_duration_size.Text = $"{song.Year} - {song.Duration.Minutes}:{song.Duration.Seconds} - {(song.Size / 1024f / 1024f).ToString("0.00")}MB";
             this.lbl_featuring.Text = $"{(song.Featuring.Length > 0 ? song.Featuring.First() : string.Empty)}";
         }
+
+        private async void btn_download_Click(object sender, EventArgs e)
+        {
+            string name = Program.mediathequeSongs.Where(m => m.Value.Contains(song)).First().Key;
+            await Protocol.AskMedia(song.Hash, name, 0, song.Size); //TEMP name
+        }
     }
 }

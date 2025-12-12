@@ -31,6 +31,7 @@
             lbl_title_artist = new Label();
             lbl_year_duration_size = new Label();
             lbl_featuring = new Label();
+            btn_download = new Button();
             SuspendLayout();
             // 
             // lbl_title_artist
@@ -60,11 +61,22 @@
             lbl_featuring.TabIndex = 5;
             lbl_featuring.Text = "Featuring";
             // 
+            // btn_download
+            // 
+            btn_download.Location = new Point(229, 3);
+            btn_download.Name = "btn_download";
+            btn_download.Size = new Size(19, 23);
+            btn_download.TabIndex = 6;
+            btn_download.Text = "↓";
+            btn_download.UseVisualStyleBackColor = true;
+            btn_download.Click += btn_download_Click;
+            // 
             // SongCard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
+            Controls.Add(btn_download);
             Controls.Add(lbl_featuring);
             Controls.Add(lbl_year_duration_size);
             Controls.Add(lbl_title_artist);
@@ -79,5 +91,6 @@
         private Label lbl_title_artist;
         private Label lbl_year_duration_size;
         private Label lbl_featuring;
+        private Button btn_download;
     }
 }

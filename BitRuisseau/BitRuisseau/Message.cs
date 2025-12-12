@@ -18,7 +18,7 @@ namespace BitRuisseau
         /// <summary>
         /// The message sender
         /// </summary>
-        public string Sender { get; set; }
+        public string Sender { get; set; } = System.Net.Dns.GetHostName();
 
         /// <summary>
         /// What this message is for
