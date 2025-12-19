@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Formats.Tar;
 using System.Linq;
 using System.Security.Cryptography;
@@ -44,12 +45,12 @@ namespace BitRuisseau
         /// <summary>
         /// The hash of the file content
         /// </summary>
-        public string Hash { get; }
+        public string Hash { get; init; }
 
         /// <summary>
         /// The file format of the song
         /// </summary>
-        public string Extension { get; }
+        public string Extension { get; init; }
 
         /// <summary>
         /// The song path on disk
@@ -74,7 +75,8 @@ namespace BitRuisseau
 
                 Path = path;
             }
-            catch {
+            catch (Exception e) {
+                Trace.WriteLine(e);
                 Title = "Fichier corrompu";
                 Artist = string.Empty;
                 Year = 0;

@@ -72,14 +72,16 @@ namespace BitRuisseau
         /// <param name="name">The name/ip of the mediatheque</param>
         public async static void SendMedia(string hash, string name, int startByte, int endByte)
         {
-            if (Program.songs.Any(s => s.Hash == hash))
+            if (Program.songs.Any(s => s.Hash.ToUpper() == hash.ToUpper()))
             {
-                byte[] bytes = File.ReadAllBytes(Program.songs.Where(s => s.Hash == hash).First().Path);
+                Trace.WriteLine("a");
+                byte[] bytes = File.ReadAllBytes(Program.songs.Where(s => s.Hash.ToUpper() == hash.ToUpper()).First().Path);
                 string b64 = Convert.ToBase64String(bytes.Skip(startByte).Take(endByte - startByte).ToArray());
 
                 bytes = null; //Free memory doesnt seem to work https://stackoverflow.com/questions/20859373/clear-array-after-is-used-c-sharp
 
                 await mqttService.SendMessage(new Message { Action = "sendMedia", Recipient = name, EndByte = endByte, StartByte = startByte, Hash = hash, SongData = b64 });
+                Trace.WriteLine("b");
             }
         }
     }

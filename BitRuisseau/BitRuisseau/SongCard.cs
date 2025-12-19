@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace BitRuisseau
 {
@@ -25,6 +26,7 @@ namespace BitRuisseau
         private async void btn_download_Click(object sender, EventArgs e)
         {
             string name = Program.mediathequeSongs.Where(m => m.Value.Contains(song)).First().Key;
+            Trace.WriteLine(song.Hash + " :" + name + " :" + song.Size);
             await Protocol.AskMedia(song.Hash, name, 0, song.Size); //TEMP name
         }
     }
