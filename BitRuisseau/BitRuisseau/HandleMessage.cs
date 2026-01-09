@@ -75,13 +75,14 @@ namespace BitRuisseau
                             fileStream.Close();
 
                             //Get song info
-
                             Song song = new Song(File.ReadAllText(Config.LASTUSEDPATHFILE) + @$"\tmp-bitruisseau\{message.Hash}.{extension}");
                             Program.songs.Add(song);
 
+                            //Move when done
                             File.Move(File.ReadAllText(Config.LASTUSEDPATHFILE) + @$"\tmp-bitruisseau\{message.Hash}.{extension}", File.ReadAllText(Config.LASTUSEDPATHFILE) + @$"\{s.Title}.{extension}");
 
-                            //Move when done
+                            //Remove temp file
+                            File.Delete(File.ReadAllText(Config.LASTUSEDPATHFILE) + @$"\tmp-bitruisseau\{message.Hash}");
                         }
                         break;
 
