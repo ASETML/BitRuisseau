@@ -11,9 +11,12 @@ using System.Diagnostics;
 
 namespace BitRuisseau
 {
+    /// <summary>
+    /// Display a song
+    /// </summary>
     public partial class SongCard : UserControl
     {
-        private readonly Song song;
+        private readonly Song song; //The song to display
         public SongCard(Song s)
         {
             InitializeComponent();
@@ -23,6 +26,11 @@ namespace BitRuisseau
             this.lbl_featuring.Text = $"{(song.Featuring.Length > 0 ? song.Featuring.First() : string.Empty)}";
         }
 
+        /// <summary>
+        /// Send an event when the download button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void btn_download_Click(object sender, EventArgs e)
         {
             string name = Program.mediathequeSongs.Where(m => m.Value.Contains(song)).First().Key;

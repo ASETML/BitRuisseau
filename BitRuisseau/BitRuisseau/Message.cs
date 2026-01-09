@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace BitRuisseau
 {
+    /// <summary>
+    /// The message used to communicate
+    /// </summary>
     public class Message
     {
         /// <summary>

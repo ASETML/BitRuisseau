@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace BitRuisseau
 {
+    /// <summary>
+    /// Display a mediatheque
+    /// </summary>
     public partial class MediathequeCard : UserControl
     {
         private string _name;
@@ -20,6 +23,8 @@ namespace BitRuisseau
             InitializeComponent();
             this.lbl_name.Text = name;
             this._name = name;
+
+            //The control is green if it is us
             if (name == System.Net.Dns.GetHostName())
             {
                 this.lbl_name.Text = name + " (Vous)";
@@ -27,9 +32,13 @@ namespace BitRuisseau
             }
         }
 
+        /// <summary>
+        /// Send an event when clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MediathequeCard_Click(object sender, EventArgs e)
         {
-            
             MediathequeSelected.Invoke(this, new AskCatalogEventArgs(this._name));
         }
     }

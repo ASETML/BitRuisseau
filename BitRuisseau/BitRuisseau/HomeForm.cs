@@ -90,14 +90,23 @@ namespace BitRuisseau
         }
 
         //TODO: event when online message received
+        /// <summary>
+        /// Show the online mediatheque list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void btn_loadMediatheques_Click(object sender, EventArgs e)
         {
+            //If someone disconnected
             Program.mediathequeSongs.Clear();
 
+            //Ask online mediatheques
             await Protocol.GetOnlineMediatheque();
 
+            //Wait for answer
             Thread.Sleep(1000);
 
+            //Show mediatheque list
             flp_mediathequesList.Controls.Clear();
             foreach (KeyValuePair<string, List<Song>> mediatheque in Program.mediathequeSongs)
             {
@@ -107,6 +116,11 @@ namespace BitRuisseau
             }
         }
 
+        /// <summary>
+        /// Ask the catalog of a mediatheque
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void MediaAsked(object sender, EventArgs e)
         {
             AskCatalogEventArgs ev = (AskCatalogEventArgs)e;
@@ -114,13 +128,14 @@ namespace BitRuisseau
 
             //Wait for the response
             Thread.Sleep(200);
-            
+
             int count = 0;
             while (Program.mediathequeSongs[ev.Name].Count() == 0 && count < 100) {
                 Thread.Sleep(50);
                 count++;
             }
 
+            //Show song list
             flowLayoutPanel1.Controls.Clear();
             foreach (Song s in Program.mediathequeSongs[ev.Name])
             {

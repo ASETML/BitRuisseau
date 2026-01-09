@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace BitRuisseau
 {
+    /// <summary>
+    /// A song
+    /// </summary>
     public class Song : ISong
     {
         /// <summary>
@@ -58,7 +61,15 @@ namespace BitRuisseau
         [JsonIgnore]
         public string? Path { get; set; }
 
+        /// <summary>
+        /// Empty constructor for deserialization
+        /// </summary>
         public Song() { }
+
+        /// <summary>
+        /// Constructor to create a song from a file
+        /// </summary>
+        /// <param name="path"></param>
         public Song(string path)
         {
             try
